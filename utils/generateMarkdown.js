@@ -1,6 +1,6 @@
 function generateMarkdown(data) {
   return `
-# ${data.questions}
+# ${data.name}
 \n ${data.badges}
 \n ${data.title}
 \n ${data.describe}

@@ -1,1 +1,0 @@
-{"questions":"lynchc17@gmail.com","badges":"no","title":"no","describe":"no","table":"no","installation":"no","usage":"no","license":"no","contributing":"no","tests":"no"}

@@ -8,8 +8,8 @@ const axios = require("axios");
 const questions = [
   {
     type: "input",
-    message: "What is your GitHub email?",
-    name: "questions",
+    message: "What is your GitHub username?",
+    name: "name",
   },
   {
     type: "input",
@@ -70,11 +70,36 @@ function writeToFile(fileName, data) {
 
 }
 
-function init() {
+async function init() {
     inquirer.prompt(questions).then((data) => {
-  {
-    writeToFile("newREADME.md",JSON.stringify(data));
-    }
+
+      const { name, badges, title, describe, table, installation, usage, license, licenseURL, contributing, tests } = data;
+
+      if (name === "") {
+        return init();
+      }
+
+
+      axios.get(`https://api.github.com/users/${name}`)
+            .then( gitHubInfo => {
+              const badgeVar = `![GitHub repo size](https://img.shields.io/github/repo-size/${name}/${title}?logo=github)`;
+              const licenseVar = `\n[${license}](${licenseURL})\n`;
+              const { data: {avatar_url, html_url, location, email} } = gitHubInfo
+              const contributingVar = contributing.split("");
+              let contributingURL = "" ;
+              contributingVar.forEach(element => {
+                  let url = `http://github.com/${element}`;
+                  const mdString = `\n[${element}](${url})\n`;
+                  contributingURL += mdString;
+              });
+              const markdown = generateMarkdown({ name, badges, title, describe, table, installation, usage, license, licenseURL, licenseURL, contributing, contributingVar, contributingURL, tests, avatar_url, html_url,});
+        
+              writeToFile("newestREADME.md", markdown)
+            })
+      
+  // {
+  //   writeToFile("newREADME.md",JSON.stringify(data));
+  //   }
   })
 }
 
